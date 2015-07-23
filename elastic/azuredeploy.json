@@ -1,0 +1,521 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "Admin username used when provisioning virtual machines"
+      }
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Admin SSH key used when provisioning virtual machines"
+      }
+    },
+    "dnsNameforLBIP": {
+      "type": "string",
+      "metadata": {
+        "description": "Load balancer subdomain name: for example ([subdomain].westus.cloudapp.azure.com)"
+      }
+    },
+    "storageAccountPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Unique namespace for the Storage Account where the Virtual Machine's disks will be placed"
+      }
+    },
+    "region": {
+      "type": "string",
+      "allowedValues": [
+        "West US",
+        "East US",
+        "East Asia",
+        "Southeast Asia",
+        "West Europe"
+      ],
+      "metadata": {
+        "description": "Location where resources will be provisioned"
+      }
+    },
+    "virtualNetworkName": {
+      "type": "string",
+      "metadata": {
+        "description": "Virtual Network"
+      }
+    },
+    "OS": {
+      "type": "string",
+      "defaultValue": "ubuntu",
+      "allowedValues": [
+        "ubuntu"
+      ],
+      "metadata": {
+        "description": "The operating system to deploy Elasticsearch cluster on"
+      }
+    },
+    "loadBalancerType": {
+      "type": "string",
+      "defaultValue": "external",
+      "allowedValues": [
+        "internal",
+        "external"
+      ],
+      "metadata": {
+        "description": "Setup the load balancer internal or external.  If you are setting up Elasticsearch on an external endpoint you will need to secure your nodes with a product like Elasticsearch Shield"
+      }
+    },
+    "jumpbox": {
+      "type": "string",
+      "defaultValue": "Yes",
+      "allowedValues": [
+        "Yes",
+        "No"
+      ],
+      "metadata": {
+        "description": "Optionally add a virtual machine to the deployment which you can use to connect and manage virtual machines on the internal network"
+      }
+    },
+    "vmClientNodeCount": {
+      "type": "int",
+      "defaultValue": 0,
+      "allowedValues": [
+        0,
+        3,
+        5,
+        7
+      ],
+      "metadata": {
+        "description": "Number of Elasticsearch client nodes to provision (Setting this to zero puts the data nodes on the load balancer)"
+      }
+    },
+    "vmSizeClientNodes": {
+      "type": "string",
+      "defaultValue": "Standard_A2",
+      "metadata": {
+        "description": "Size of the Elasticsearch cluster client nodes"
+      }
+    },
+    "vmSizeMasterNodes": {
+      "type": "string",
+      "defaultValue": "Standard_A1",
+      "metadata": {
+        "description": "Size of the Elasticsearch master nodes"
+      }
+    },
+    "vmSizeDataNodes": {
+      "type": "string",
+      "defaultValue": "Standard_A2",
+      "allowedValues": [
+        "Standard_D1",
+        "Standard_A2",
+        "Standard_A3",
+        "Standard_A4",
+        "Standard_A7"
+      ],
+      "metadata": {
+        "description": "Size of the Elasticsearch data nodes"
+      }
+    },
+    "dataNodeScaleUnits": {
+      "type": "int",
+      "defaultValue": 1,
+      "metadata": {
+        "description": "This is the number of node scale units (Each scale unit will provision one storage account and number of data nodes configured per unit)"
+      }
+    },
+    "dataNodesPerUnit": {
+      "type": "int",
+      "defaultValue": 3,
+      "metadata": {
+        "description": "Number of Elasticsearch data nodes to provision with each node scale unit"
+      }
+    },
+    "dataDiskSize": {
+      "type": "int",
+      "defaultValue": 1023,
+      "metadata": {
+        "description": "Size of each data disk attached to data nodes in (Gb)"
+      }
+    },
+    "esClusterName": {
+      "type": "string",
+      "defaultValue": "elasticCluster",
+      "metadata": {
+        "description": "The name of the Elasticsearch cluster"
+      }
+    },
+    "esVersion": {
+      "type": "string",
+      "defaultValue": "1.5.2",
+      "allowedValues": [
+        "1.6.0",
+        "1.5.2",
+        "1.5.1",
+        "1.5.0"
+      ],
+      "metadata": {
+        "description": "Elasticsearch version to install"
+      }
+    },
+    "esPlugins": {
+      "type": "string",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "defaultValue": "true",
+      "metadata": {
+        "description": "Install the Plugins - Marvel, Shield, Watcher"
+      }
+    },
+    "shieldAdminUsername": {
+      "type": "string",
+      "defaultValue": "es_admin",
+      "metadata": {
+        "description": "Shield Admin username"
+      }
+    },
+    "shieldAdminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Shield Admin SSH key used "
+      }
+    },
+    "shieldReadUsername": {
+      "type": "string",
+      "defaultValue": "es_read",
+      "metadata": {
+        "description": "Shield Admin username"
+      }
+    },
+    "shieldReadPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Shield Admin SSH key used "
+      }
+    },
+    "shieldKibanaUsername": {
+      "type": "string",
+      "defaultValue": "es_kibana4",
+      "metadata": {
+        "description": "Shield Admin username"
+      }
+    },
+    "shieldKibanaPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Shield Admin SSH key used "
+      }
+    }
+  },
+  "variables": {
+    "templateBaseUrl": "https://raw.githubusercontent.com/webtoed/azure-templates/master/elastic/",
+    "masterNodesIpPrefix": "10.1.0.1",
+    "admin": {
+      "user": "[parameters('adminUsername')]",
+      "password": "[parameters('adminPassword')"
+    },
+    "networkSettings": {
+      "virtualNetworkName": "[parameters('virtualNetworkName')]",
+      "addressPrefix": "10.1.0.0/16",
+      "subnet": {
+        "master": {
+          "name": "master",
+          "prefix": "10.1.0.0/24",
+          "vnet": "[parameters('virtualNetworkName')]"
+        },
+        "data": {
+          "name": "data",
+          "prefix": "10.1.1.0/24",
+          "vnet": "[parameters('virtualNetworkName')]"
+        }
+      }
+    },
+    "dataNodeAvailabilitySetName": "dataNodeAvailabilitySet",
+    "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'shared-resources.json')]",
+    "masterTemplateUrl": "[concat(variables('templateBaseUrl'), 'master-nodes-resources.json')]",
+    "clientTemplate0": "empty-resources.json",
+    "clientTemplate3": "client-nodes-resources.json",
+    "clientTemplate5": "client-nodes-resources.json",
+    "clientTemplate7": "client-nodes-resources.json",
+    "clientTemplateUrl": "[concat(variables('templateBaseUrl'), variables(concat('clientTemplate',parameters('vmClientNodeCount'))))]",
+    "dataTemplateStandard_D1": "data-nodes-2disk-resources.json",
+    "dataTemplateStandard_A2": "data-nodes-4disk-resources.json",
+    "dataTemplateStandard_A3": "data-nodes-8disk-resources.json",
+    "dataTemplateStandard_A4": "data-nodes-16disk-resources.json",
+    "dataTemplateStandard_A7": "data-nodes-16disk-resources.json",
+    "dataTemplateUrl": "[concat(variables('templateBaseUrl'), variables(concat('dataTemplate',parameters('vmSizeDataNodes'))))]",
+    "jumpboxTemplateYes": "jumpbox-resources.json",
+    "jumpboxTemplateNo": "empty-resources.json",
+    "jumpboxTemplateUrl": "[concat(variables('templateBaseUrl'), variables(concat('jumpboxTemplate',parameters('jumpbox'))))]",
+    "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
+    "ubuntuScripts": [
+      "[concat(variables('templateBaseUrl'), 'elasticsearch-ubuntu-install.sh')]",
+      "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/shared_scripts/ubuntu/vm-disk-utils-0.1.sh"
+    ],
+    "ubuntuImageReference": {
+      "publisher": "Canonical",
+      "offer": "UbuntuServer",
+      "sku": "14.04.2-LTS",
+      "version": "latest"
+    },
+    "ubuntuOSProfileConfigKey": "linuxConfiguration",
+    "ubuntuOSProfileConfig": {
+      "disablePasswordAuthentication": "false"
+    },
+    "osSettings": {
+      "imageReference": "[variables(concat(parameters('OS'), 'ImageReference'))]",
+      "scripts": "[variables(concat(parameters('OS'), 'Scripts'))]"
+    },
+    "esSettings": {
+      "clusterName": "[parameters('esClusterName')]",
+      "version": "[parameters('esVersion')]",
+      "installPlugins": "[parameters('esPlugins')]",
+      "shieldAdmin": "[parameters('shieldAdminUsername')]",
+      "shieldAdminPwd": "[parameters('shieldAdminPassword')]",
+      "shieldRead": "[parameters('shieldReadUsername')]",
+      "shieldReadPwd": "[parameters('shieldReadPassword')]",
+      "shieldKibana": "[parameters('shieldKibanaUsername')]",
+      "shieldKibanaPwd": "[parameters('shieldKibanaPassword')]",
+      "discoveryHosts": "[concat(variables('masterNodesIpPrefix'), '-3')]",
+      "osProfileConfigKey": "[variables(concat(parameters('OS'), 'OSProfileConfigKey'))]",
+      "osProfileConfig": "[variables(concat(parameters('OS'), 'OSProfileConfig'))]"
+    },
+    "lbBackEndPoolsAdded": {"backendPools": [
+      {
+        "id":"[concat(resourceId('Microsoft.Network/loadBalancers','loadBalancer'),'/backendAddressPools/LBBE')]"
+      }
+    ]},
+    "lbBackendPoolsRemoved": {"backendPools":[]},
+    "dataLBSettings0":"[variables('lbBackEndPoolsAdded')]",
+    "dataLBSettings3":"[variables('lbBackendPoolsRemoved')]",
+    "dataLBSettings5":"[variables('lbBackendPoolsRemoved')]",
+    "dataLBSettings7":"[variables('lbBackendPoolsRemoved')]",
+    "dataLBSettings": "[variables(concat('dataLBSettings', parameters('vmClientNodeCount')))]"
+  },
+  "resources": [
+    {
+      "name": "master-nodes",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "[concat('Microsoft.Resources/deployments/', 'shared')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('masterTemplateUrl')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "storageAccountName": {
+            "value": "[concat(parameters('storageAccountPrefix'),'shared')]"
+          },
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "masterNodesIpPrefix": {
+            "value": "[variables('masterNodesIpPrefix')]"
+          },
+          "region": {
+            "value": "[parameters('region')]"
+          },
+          "vmSize": {
+            "value": "[parameters('vmSizeMasterNodes')]"
+          },
+          "subnet": {
+            "value": "[variables('networkSettings').subnet.master]"
+          },
+          "osSettings": {
+            "value": "[variables('osSettings')]"
+          },
+          "esSettings": {
+            "value": "[variables('esSettings')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "shared",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('sharedTemplateUrl')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "region": {
+            "value": "[parameters('region')]"
+          },
+          "networkSettings": {
+            "value": "[variables('networkSettings')]"
+          },
+          "esDataHaSetName": {
+            "value": "[variables('dataNodeAvailabilitySetName')]"
+          },
+          "storageAccountName": {
+            "value": "[concat(parameters('storageAccountPrefix'),'shared')]"
+          },
+          "loadBalancerType": {
+            "value": "[parameters('loadBalancerType')]"
+          },
+          "ilbIpAddress": {
+            "value": "10.0.0.100"
+          },
+          "dnsName": {
+            "value": "[parameters('dnsNameforLBIP')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "client-nodes",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "[concat('Microsoft.Resources/deployments/', 'shared')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('clientTemplateUrl')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "storageAccountName": {
+            "value": "[concat(parameters('storageAccountPrefix'),'shared')]"
+          },
+          "region": {
+            "value": "[parameters('region')]"
+          },
+          "subnet": {
+            "value": "[variables('networkSettings').subnet.data]"
+          },
+          "vmSize": {
+            "value": "[parameters('vmSizeClientNodes')]"
+          },
+          "esSettings": {
+            "value": "[variables('esSettings')]"
+          },
+          "osSettings": {
+            "value": "[variables('osSettings')]"
+          },
+          "vmCount": {
+            "value": "[parameters('vmClientNodeCount')]"
+          },
+          "lbBackendPools": {
+            "value": "[variables('lbBackEndPoolsAdded')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "[concat('data-nodes',copyindex())]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "[concat('Microsoft.Resources/deployments/', 'shared')]"
+      ],
+      "copy": {
+        "name": "dataScaleGroupLoop",
+        "count": "[parameters('dataNodeScaleUnits')]"
+      },
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('dataTemplateUrl')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "storageAccountName": {
+            "value": "[concat(parameters('storageAccountPrefix'),'su', copyindex())]"
+          },
+          "region": {
+            "value": "[parameters('region')]"
+          },
+          "subnet": {
+            "value": "[variables('networkSettings').subnet.data]"
+          },
+          "vmSize": {
+            "value": "[parameters('vmSizeDataNodes')]"
+          },
+          "dataNodes": {
+            "value": "[parameters('dataNodesPerUnit')]"
+          },
+          "esSettings": {
+            "value": "[variables('esSettings')]"
+          },
+          "dataDiskSize": {
+            "value": "[parameters('dataDiskSize')]"
+          },
+          "groupName": {
+            "value": "[concat('su', copyindex(), 'n')]"
+          },
+          "availabilitySet": {
+            "value": "[variables('dataNodeAvailabilitySetName')]"
+          },
+          "osSettings": {
+            "value": "[variables('osSettings')]"
+          },
+          "lbBackendPools": {
+            "value": "[variables('dataLBSettings')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "jumpbox",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "[concat('Microsoft.Resources/deployments/', 'shared')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('jumpboxTemplateUrl')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "storageAccountName": {
+            "value": "[concat(parameters('storageAccountPrefix'),'shared')]"
+          },
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "region": {
+            "value": "[parameters('region')]"
+          },
+          "subnet": {
+            "value": "[variables('networkSettings').subnet.data]"
+          },
+          "osSettings": {
+            "value": "[variables('osSettings')]"
+          }
+        }
+      }
+    }
+  ]
+}
