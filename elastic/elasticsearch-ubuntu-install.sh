@@ -23,7 +23,7 @@
 # SOFTWARE.
 #
 # Trent Swanson (Full Scale 180 Inc)
-#
+# Modified - 7-15-15 Chad Pryor
 ### Remaining work items
 ### -Alternate discovery options (Azure Storage)
 ### -Implement Idempotency and Configuration Change Support
@@ -35,6 +35,7 @@
 ### -Add logic for marvel only/monitoring cluster
 ### -Add Marvel configs - marvel.agent.exporter.es.hosts: ["es-mon-1:9200","es-mon-2:9200"]
 ### -Add more config - http.cors.enabled: true | http.cors.allow-origin: /.*/ | http.cors.allow-credentials: true
+### -Add role based configs or link to file source
 
 help()
 {

@@ -209,7 +209,7 @@
         "typeHandlerVersion": "1.2",
         "settings": {
           "fileUris": "[parameters('osSettings').scripts]",
-          "commandToExecute": "[concat('bash elasticsearch-ubuntu-install.sh -zn ', parameters('esSettings').clusterName, ' -v ', parameters('esSettings').version, ' -d ', parameters('esSettings').discoveryHosts, '-l ', parameters('esSettings').installPlugins, '-a ', parameters('esSettings').shieldAdmin, '-A', parameters('esSettings').shieldAdminPwd, '-r ', parameters('esSettings').shieldRead, '-R', parameters('esSettings').shieldReadPwd, '-k ', parameters('esSettings').shieldKibana, '-K ', parameters('esSettings').shieldKibanaPwd)]"
+          "commandToExecute": "[concat('bash elasticsearch-ubuntu-install.sh -zn ', parameters('esSettings').clusterName, ' -v ', parameters('esSettings').version, ' -d ', parameters('esSettings').discoveryHosts, ' -l ', parameters('esSettings').installPlugins, ' -a ', parameters('esSettings').shieldAdmin, ' -A ', parameters('esSettings').shieldAdminPwd, ' -r ', parameters('esSettings').shieldRead, ' -R ', parameters('esSettings').shieldReadPwd, ' -k ', parameters('esSettings').shieldKibana, ' -K ', parameters('esSettings').shieldKibanaPwd)]"
         }
       }
     }

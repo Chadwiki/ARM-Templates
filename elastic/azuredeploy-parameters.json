@@ -15,16 +15,16 @@
         "value": 1
     },
     "dataNodesPerUnit": {
-        "value": 2
+        "value": 3
     },
     "region": {
         "value": "West US"
     },
     "virtualNetworkName": {
-        "value": "elasticsearch"
+        "value": "elasticVNET"
     },
     "esClusterName": {
-        "value": "elasticsearch-fullscale"
+        "value": "elastic-cluster"
     },
     "loadBalancerType": {
         "value": "external"
