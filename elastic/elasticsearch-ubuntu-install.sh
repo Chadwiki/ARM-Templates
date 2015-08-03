@@ -23,7 +23,7 @@
 # SOFTWARE.
 #
 # Trent Swanson (Full Scale 180 Inc)
-# Modified - 7-15-15 Chad Pryor
+# Modified - 7-15-15, 8-3-15 Chad Pryor
 ### Remaining work items
 ### -Alternate discovery options (Azure Storage)
 ### -Implement Idempotency and Configuration Change Support
@@ -35,7 +35,8 @@
 ### -Add logic for marvel only/monitoring cluster
 ### -Add Marvel configs - marvel.agent.exporter.es.hosts: ["es-mon-1:9200","es-mon-2:9200"]
 ### -Add more config - http.cors.enabled: true | http.cors.allow-origin: /.*/ | http.cors.allow-credentials: true
-### -Add role based configs or link to file source
+### -Add role based configs or link to file source - CLUSTER_TYPE. Need to add to parameters and extend logic
+### -Issue with KOPF and 1.6.2+
 
 help()
 {
@@ -55,6 +56,8 @@ help()
     echo "-x configure as a dedicated master node"
     echo "-y configure as client only node (no master, no data)"
     echo "-z configure as data node (no master)"
+    echo "-m marvel host , used for agent config"
+    echo "-t type of cluster, Marvel or Elasticsearch"
     echo "-h view this help content"
 }
 
@@ -90,6 +93,7 @@ fi
 
 #Script Parameters
 CLUSTER_NAME="elasticsearch"
+CLUSTER_TYPE="elastic"
 ES_VERSION="1.5.0"
 DISCOVERY_ENDPOINTS=""
 INSTALL_PLUGINS="true" #We use this because of ARM template limitation
@@ -99,12 +103,13 @@ MASTER_ONLY_NODE=0
 USER_ADMIN="es_admin"
 USER_ADMIN_PWD="changeME"
 USER_READ="es_read"
-USER_READ_PWD="changeMEread"
+USER_READ_PWD="changeME"
 USER_KIBANA4="es_kibana4"
-USER_KIBANA4_PWD="changeMEkibana"
+USER_KIBANA4_PWD="changeME"
+MARVEL_HOST='"marvel_export:marvelPassw0rd@10.1.0.10:9200","marvel_export:marvelPassw0rd@10.1.0.11:9200","marvel_export:marvelPassw0rd@10.1.0.12:9200"'
 
 #Loop through options passed
-while getopts :n:d:v:l:a:A:r:R:k:K:xyzsh optname; do
+while getopts :n:d:v:l:a:A:r:R:k:K:m:t:xyzsh optname; do
     log "Option $optname set with value ${OPTARG}"
   case $optname in
     n) #set cluster name
@@ -137,6 +142,9 @@ while getopts :n:d:v:l:a:A:r:R:k:K:xyzsh optname; do
     K) #shield admin pwd
       USER_ADMIN_PWD=${OPTARG}
       ;;
+    m) #marvel host
+      MARVEL_HOST=${OPTARG}
+      ;;
     x) #master node
       MASTER_ONLY_NODE=1
       ;;
@@ -148,6 +156,9 @@ while getopts :n:d:v:l:a:A:r:R:k:K:xyzsh optname; do
       ;;
     s) #use OS striped disk volumes
       OS_STRIPED_DISK=1
+      ;;
+    t) #type of cluster
+      CLUSTER_TYPE=${OPTARG}
       ;;
     d) #place data on local resource disk
       NON_DURABLE=1
@@ -293,10 +304,12 @@ echo "discovery.zen.ping.multicast.enabled: false" >> /etc/elasticsearch/elastic
 echo "discovery.zen.ping.unicast.hosts: $HOSTS_CONFIG" >> /etc/elasticsearch/elasticsearch.yml
 
 # Configure for for Marvel/Monitoring cluster
-echo "marvel.agent.enabled: true" >> /etc/elasticsearch/elasticsearch.yml
+echo "marvel.agent.enabled: false" >> /etc/elasticsearch/elasticsearch.yml
 echo "action.auto_create_index: true"  >> /etc/elasticsearch/elasticsearch.yml
-# Next needs cleaned up for use of LBIP (ext/int)
-echo 'marvel.agent.exporter.es.hosts: ["marvel_export:marvelPassw0rd@10.1.0.10:9200","marvel_export:marvelPassw0rd@10.1.0.11:9200","marvel_export:marvelPassw0rd@10.1.0.12:9200"]' >> /etc/elasticsearch/elasticsearch.yml
+# Next needs cleaned up for use of LBIP (ext/int) add to json param
+echo 'marvel.agent.exporter.es.hosts: ["${MARVEL_HOST}"]' >> /etc/elasticsearch/elasticsearch.yml
+# Enable cross cors
+echo "http.cors.enabled: true" >> /etc/elasticsearch/elasticsearch.yml
 
 # Configure Elasticsearch node type
 log "Configure master/client/data node type flags mater-$MASTER_ONLY_NODE data-$DATA_NODE"
