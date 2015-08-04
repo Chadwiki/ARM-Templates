@@ -307,7 +307,7 @@ echo "discovery.zen.ping.unicast.hosts: $HOSTS_CONFIG" >> /etc/elasticsearch/ela
 # Next needs cleaned up for use of LBIP (ext/int) add to json param
 echo "marvel.agent.exporter.es.hosts: [ $MARVEL_HOST ]" >> /etc/elasticsearch/elasticsearch.yml
 echo "marvel.agent.enabled: true" >> /etc/elasticsearch/elasticsearch.yml
-echo "action.auto_create_index: .marvel-*"  >> /etc/elasticsearch/elasticsearch.yml
+echo "action.auto_create_index: .marvel-*, *"  >> /etc/elasticsearch/elasticsearch.yml
 
 # Enable cross cors
 echo "http.cors.enabled: true" >> /etc/elasticsearch/elasticsearch.yml
