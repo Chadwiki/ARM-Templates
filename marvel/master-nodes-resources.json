@@ -152,7 +152,7 @@
         "count": 3
       },
       "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', 'masterVm', copyindex())]",
+        "[concat('Microsoft.Compute/virtualMachines/', 'mvmasterVm', copyindex())]",
         "[concat('Microsoft.Network/networkInterfaces/', 'masterNodeNic', copyindex())]"
       ],
       "properties": {
