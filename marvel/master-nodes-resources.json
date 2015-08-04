@@ -63,7 +63,7 @@
     "vmStorageAccountContainerName": "vhd",
     "subnetRef":"[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('subnet').vnet), '/subnets/', parameters('subnet').name)]",
     "storageAccountName": "[parameters('storageAccountName')]",
-    "vmName": "masterVm"
+    "vmName": "mvmasterVm"
   },
   "resources": [
     {
