@@ -145,7 +145,7 @@
           "vmSize": "[parameters('vmSize')]"
         },
         "osProfile": {
-          "computername": "[concat(parameters('groupName'), 'vm', copyIndex())]",
+          "computername": "[concat('mv', parameters('groupName'), 'vm', copyIndex())]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },
