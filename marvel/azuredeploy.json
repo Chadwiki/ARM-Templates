@@ -238,7 +238,7 @@
         }
       }
     },
-    "dataNodeAvailabilitySetName": "dataNodeAvailabilitySet",
+    "dataNodeAvailabilitySetName": "mvdataNodeAvailabilitySet",
     "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'shared-resources.json')]",
     "masterTemplateUrl": "[concat(variables('templateBaseUrl'), 'master-nodes-resources.json')]",
     "clientTemplate0": "empty-resources.json",

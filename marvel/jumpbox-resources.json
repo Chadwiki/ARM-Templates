@@ -50,10 +50,10 @@
     "vmStorageAccountContainerName": "vhd",
     "vmSize": "Standard_A0",
     "subnetRef": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('subnet').vnet), '/subnets/', parameters('subnet').name)]",
-    "vmName": "[concat(parameters('namespace'), '-vm')]",
+    "vmName": "[concat(parameters('namespace'), '-mv')]",
     "publicIpName": "[concat(parameters('namespace'), '-pip')]",
     "securityGroupName": "[concat(parameters('namespace'), '-nsg')]",
-    "nicName": "[concat(parameters('namespace'), '-nic')]"
+    "nicName": "[concat(parameters('namespace'), '-mv-nic')]"
   },
   "resources": [
     {
