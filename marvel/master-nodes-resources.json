@@ -107,7 +107,7 @@
         "count": 3
       },
       "dependsOn": [
-        "[concat('Microsoft.Network/networkInterfaces/', 'mv', copyindex())]",
+        "[concat('Microsoft.Network/networkInterfaces/', 'mvmasterNodeNic', copyindex())]",
         "[concat('Microsoft.Compute/availabilitySets/', 'elasticsearchMaster')]"
       ],
       "properties": {
