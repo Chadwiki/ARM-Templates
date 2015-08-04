@@ -106,7 +106,7 @@ USER_READ="es_read"
 USER_READ_PWD="changeME"
 USER_KIBANA4="es_kibana4"
 USER_KIBANA4_PWD="changeME"
-MARVEL_HOST='"marvel_export:marvelPassw0rd@10.1.0.10:9200","marvel_export:marvelPassw0rd@10.1.0.11:9200","marvel_export:marvelPassw0rd@10.1.0.12:9200"'
+MARVEL_HOST='"marvel_export:marvelPassw0rd@104.42.199.87:9200:9200"'
 
 #Loop through options passed
 while getopts :n:d:v:l:a:A:r:R:k:K:m:t:xyzsh optname; do
