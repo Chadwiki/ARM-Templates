@@ -1,4 +1,4 @@
-# Deploy an elasticsearch ##MARVEL #cluster
+# Deploy an elasticsearch #MARVEL cluster
 
 
 ##Deploy
