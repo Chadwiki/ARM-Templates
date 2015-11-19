@@ -104,51 +104,6 @@
                 }
               }
             ]
-          },
-          {
-            "name": "shieldReadSelector",
-            "type": "Microsoft.Common.Selector",
-            "label": "Shield Read",
-            "elements": [
-              {
-                "name": "shieldReadPassword",
-                "type": "Microsoft.Common.PasswordBox",
-                "defaultValue": "Pa55w0rd",
-                "label": {
-                  "password": "Password",
-                  "confirmPassword": "Confirm password"
-                },
-                "toolTip": "TODO",
-                "constraints": {
-                  "required": true
-                },
-                "options": {
-                  "hideConfirmation": false
-                }
-              }
-            ]
-          },
-          {
-            "name": "shieldKibanaSelector",
-            "type": "Microsoft.Common.Selector",
-            "label": "Shield Kibana",
-            "elements": [
-              {
-                "name": "shieldKibanaPassword",
-                "type": "Microsoft.Common.PasswordBox",
-                "label": {
-                  "password": "Password",
-                  "confirmPassword": "Confirm password"
-                },
-                "toolTip": "TODO",
-                "constraints": {
-                  "required": true
-                },
-                "options": {
-                  "hideConfirmation": false
-                }
-              }
-            ]
           }
         ]
       },
