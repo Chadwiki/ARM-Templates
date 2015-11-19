@@ -88,7 +88,7 @@
     "vmStorageAccountContainerName": "vhd",
     "subnetRef": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('subnet').vnet), '/subnets/', parameters('subnet').name)]",
     "storageAccountName": "[parameters('storageAccountName')]",
-    "vmName": "[concat(parameters('groupName'), 'vm')]"
+    "vmName": "[concat('mv', parameters('groupName'), 'vm')]"
   },
   "resources": [
     {
@@ -145,7 +145,7 @@
           "vmSize": "[parameters('vmSize')]"
         },
         "osProfile": {
-          "computername": "[concat(parameters('groupName'), 'vm', copyIndex())]",
+          "computername": "[concat('mv', parameters('groupName'), 'vm', copyIndex())]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },
@@ -176,6 +176,26 @@
               "lun": 1,
               "vhd": {
                 "Uri": "[concat('http://', parameters('groupName'),parameters('storageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',parameters('groupName'),'vm', copyindex() ,'dataDisk2','.vhd')]"
+              },
+              "caching": "None",
+              "createOption": "Empty"
+            },
+            {
+              "name": "datadisk3",
+              "diskSizeGB": "[parameters('dataDiskSize')]",
+              "lun": 2,
+              "vhd": {
+                "Uri": "[concat('http://', parameters('groupName'),parameters('storageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',parameters('groupName'),'vm', copyindex() ,'dataDisk3','.vhd')]"
+              },
+              "caching": "None",
+              "createOption": "Empty"
+            },
+            {
+              "name": "datadisk4",
+              "diskSizeGB": "[parameters('dataDiskSize')]",
+              "lun": 3,
+              "vhd": {
+                "Uri": "[concat('http://', parameters('groupName'),parameters('storageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',parameters('groupName'),'vm', copyindex() ,'dataDisk4','.vhd')]"
               },
               "caching": "None",
               "createOption": "Empty"

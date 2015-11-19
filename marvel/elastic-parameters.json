@@ -1,0 +1,58 @@
+{
+    "adminUsername": {
+      "value":"cpryor"
+    },
+    "adminPassword": {
+      "value":"changeme"
+    },
+    "dnsNameforLBIP": {
+      "value":"elastic12"
+    },
+    "storageAccountPrefix": {
+      "value":"elastic12store"
+    },
+    "region": {
+      "value":"West US"
+    },
+    "virtualNetworkName": {
+      "value":"elasticVNET"
+    },
+    "loadBalancerType": {
+      "value":"external"
+    },
+    "vmClientNodeCount": {
+      "value":3
+    },
+    "dataNodeScaleUnits": {
+      "value": 1
+    },
+    "dataNodesPerUnit": {
+      "value": 3
+    },
+    "esClusterName": {
+      "value": "elastic12_cluster"
+    },
+    "esVersion": {
+      "value":"1.6.0"
+    },
+    "esPlugins": {
+      "value":"true"
+    },
+    "shieldAdminUsername": {      
+      "value":"es_admin"
+    },
+    "shieldAdminPassword": {
+      "value":"changeme"
+    },
+    "shieldReadUsername": {
+      "value":"es_read"
+    },
+    "shieldReadPassword": {
+      "value":"changeme"
+    },
+    "shieldKibanaUsername": {
+      "value":"es_kibana4"
+    },
+    "shieldKibanaPassword": {
+      "value":"changeme"
+    }

@@ -141,7 +141,7 @@
     },
     "esClusterName": {
       "type": "string",
-      "defaultValue": "elasticCluster",
+      "defaultValue": "marvel_cluster",
       "metadata": {
         "description": "The name of the Elasticsearch cluster"
       }
@@ -150,6 +150,7 @@
       "type": "string",
       "defaultValue": "1.5.2",
       "allowedValues": [
+        "1.7.2",
         "1.7.0",
         "1.6.2",
         "1.5.2",
@@ -215,29 +216,29 @@
     }
   },
   "variables": {
-    "templateBaseUrl": "https://raw.githubusercontent.com/webtoed/ARM-Templates/master/elastic/",
-    "masterNodesIpPrefix": "10.1.0.1",
+    "templateBaseUrl": "https://raw.githubusercontent.com/webtoed/ARM-Templates/master/marvel/",
+    "masterNodesIpPrefix": "10.0.0.1",
     "admin": {
       "user": "[parameters('adminUsername')]",
       "password": "[parameters('adminPassword')"
     },
     "networkSettings": {
       "virtualNetworkName": "[parameters('virtualNetworkName')]",
-      "addressPrefix": "10.1.0.0/16",
+      "addressPrefix": "10.0.0.0/16",
       "subnet": {
         "master": {
           "name": "master",
-          "prefix": "10.1.0.0/24",
+          "prefix": "10.0.0.0/24",
           "vnet": "[parameters('virtualNetworkName')]"
         },
         "data": {
           "name": "data",
-          "prefix": "10.1.1.0/24",
+          "prefix": "10.0.1.0/24",
           "vnet": "[parameters('virtualNetworkName')]"
         }
       }
     },
-    "dataNodeAvailabilitySetName": "dataNodeAvailabilitySet",
+    "dataNodeAvailabilitySetName": "mvdataNodeAvailabilitySet",
     "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'shared-resources.json')]",
     "masterTemplateUrl": "[concat(variables('templateBaseUrl'), 'master-nodes-resources.json')]",
     "clientTemplate0": "empty-resources.json",

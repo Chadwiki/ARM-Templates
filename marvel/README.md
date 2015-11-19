@@ -1,9 +1,9 @@
-# Deploy an elastic cluster
+# Deploy an elasticsearch #MARVEL cluster
 
 
 ##Deploy
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fwebtoed%2FARM-Templates%2Fmaster%2Felastic%2Fazuredeploy.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fwebtoed%2FARM-Templates%2Fmaster%2Fmarvel%2Fazuredeploy.json" target="_blank">
    <img alt="Deploy to Azure" src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 
