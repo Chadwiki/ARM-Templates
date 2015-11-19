@@ -90,7 +90,7 @@
                   "password": "Shield es_admin password",
                   "confirmPassword": "Confirm password"
                 },
-                "toolTip": "TODO",
+                "toolTip": "Read/Write",
                 "constraints": {
                   "required": true
                 },
@@ -106,7 +106,7 @@
                   "password": "Shield es_read password",
                   "confirmPassword": "Confirm password"
                 },
-                "toolTip": "TODO",
+                "toolTip": "Read Only",
                 "constraints": {
                   "required": true
                 },
@@ -121,7 +121,7 @@
                   "password": "Shield es_kibana password",
                   "confirmPassword": "Confirm password"
                 },
-                "toolTip": "TODO",
+                "toolTip": "Kibana Role",
                 "constraints": {
                   "required": true
                 },
