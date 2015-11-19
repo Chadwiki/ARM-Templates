@@ -76,12 +76,12 @@
       },
       {
         "name": "pluginsStep",
-        "label": "Security",
+        "label": "Shield",
         "subLabel": {
           "preValidation": "TODO",
           "postValidation": "Done"
         },
-        "bladeTitle": "Shield",
+        "bladeTitle": "Security",
         "elements": [
               {
                 "name": "shieldAdminPassword",
