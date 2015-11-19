@@ -76,12 +76,12 @@
       },
       {
         "name": "pluginsStep",
-        "label": "Plugins",
+        "label": "Plugins1",
         "subLabel": {
           "preValidation": "TODO",
           "postValidation": "Done"
         },
-        "bladeTitle": "Plugins",
+        "bladeTitle": "Shield",
         "elements": [
               {
                 "name": "shieldAdminPassword",
@@ -101,6 +101,7 @@
               {
                 "name": "shieldReadPassword",
                 "type": "Microsoft.Common.PasswordBox",
+                "default" : "Pa55w0rd!",
                 "label": {
                   "password": "Shield es_read password",
                   "confirmPassword": "Confirm password"
