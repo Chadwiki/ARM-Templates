@@ -76,7 +76,7 @@
       },
       {
         "name": "pluginsStep",
-        "label": "Plugins1",
+        "label": "Security",
         "subLabel": {
           "preValidation": "TODO",
           "postValidation": "Done"
