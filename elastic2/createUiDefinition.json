@@ -83,16 +83,11 @@
         },
         "bladeTitle": "Plugins",
         "elements": [
-          {
-            "name": "shieldAdminSelector",
-            "type": "Microsoft.Common.Selector",
-            "label": "Shield Admin",
-            "elements": [
               {
                 "name": "shieldAdminPassword",
                 "type": "Microsoft.Common.PasswordBox",
                 "label": {
-                  "password": "Password",
+                  "password": "Shield es_admin password",
                   "confirmPassword": "Confirm password"
                 },
                 "toolTip": "TODO",
@@ -100,12 +95,40 @@
                   "required": true
                 },
                 "options": {
-                  "hideConfirmation": false
+                  "hideConfirmation": true
+                }
+              },
+              {
+                "name": "shieldReadPassword",
+                "type": "Microsoft.Common.PasswordBox",
+                "label": {
+                  "password": "Shield es_read password",
+                  "confirmPassword": "Confirm password"
+                },
+                "toolTip": "TODO",
+                "constraints": {
+                  "required": true
+                },
+                "options": {
+                  "hideConfirmation": true
+                }
+              },
+              {
+                "name": "shieldKibanaPassword",
+                "type": "Microsoft.Common.PasswordBox",
+                "label": {
+                  "password": "Shield es_kibana password",
+                  "confirmPassword": "Confirm password"
+                },
+                "toolTip": "TODO",
+                "constraints": {
+                  "required": true
+                },
+                "options": {
+                  "hideConfirmation": true
                 }
               }
             ]
-          }
-        ]
       },
       {
         "name": "externalAccessStep",
@@ -126,87 +149,61 @@
         },
         "bladeTitle": "No",
         "elements": [
-          {
-             "name": "dataNodesSelector",
-             "type": "Microsoft.Common.Selector",
-             "label": "Data Nodes",
-             "sublabel": {
-               "prevalidation": "Configure data nodes",
-               "postvalidation": "Data nodes configured"
-             },
-             "toolTip": "TODO",
-             "bladeTitle": "Data Nodes",
-             "bladeSubtitle": "Configure the data nodes",
-            "elements": [
-		{
-		    "name": "vmCountDataNodes",
-		    "type": "Microsoft.Common.TextBox",
-		    "label": "Number of data nodes",
-		    "defaultValue": "3",
-		    "toolTip": "TODO",
-		    "constraints": {
-		      "required": true,
-		      "regex": "^[1-9]\\d*$",
-		      "validationMessage": "Atleast 1 or higher"
-		    } 
-		},
-		{
-		  "name": "vmDataNodes",
-		  "type": "Microsoft.Compute.SizeSelector",
-		  "label": "Data Node VM Size",
-		  "toolTip": "",
-		  "recommendedSizes": [
-		     "Standard_D1",
-		     "Standard_D2",
-		     "Standard_D3"
-		  ],
-		  "constraints": {
-		     "allowedSizes": [],
-		     "excludedSizes": []
-		   },
-		   "osPlatform": "Linux",
-		   "imageReference": {
-		      "publisher": "Canonical",
-		      "offer": "UbuntuServer",
-		      "sku": "14.04.2-LTS",
-		      "version": "latest"
-		   },
-		  "count": "[steps('nodesStep').dataNodesSelector.vmCountDataNodes]" 
-		},
-                {
-		    "name": "dataNodesAreMasterEligible",
-		    "type": "Microsoft.Common.OptionsGroup",
-		    "label": "Data nodes are master eligable",
-		    "defaultValue": "no",
-		    "toolTip": "TODO",
-		    "constraints": {
-		      "allowedValues": [
-			{
-			  "label": "Yes",
-			  "value": "yes"
-			},
-			{
-			  "label": "No",
-			  "value": "no"
-			}
-		      ]
-		    }
-               }
-            ]
-          },
-          {
-             "name": "masterNodesSelector",
-             "type": "Microsoft.Common.Selector",
-             "label": "Master Nodes",
-             "sublabel": {
-               "prevalidation": "Configure master nodes",
-               "postvalidation": "Master nodes configured"
-             },
-             "toolTip": "TODO",
-             "bladeTitle": "Master Nodes",
-             "bladeSubtitle": "Configure the master nodes",
-            "elements": [
               {
+                "name": "vmCountDataNodes",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Number of data nodes",
+                "defaultValue": "3",
+                "toolTip": "TODO",
+                "constraints": {
+                  "required": true,
+                  "regex": "^[1-9]\\d*$",
+                  "validationMessage": "Atleast 1 or higher"
+                }
+              },
+              {
+                "name": "vmDataNodes",
+                "type": "Microsoft.Compute.SizeSelector",
+                "label": "Data Node VM Size",
+                "toolTip": "",
+                "recommendedSizes": [
+                  "Standard_D1",
+                  "Standard_D2",
+                  "Standard_D3"
+                ],
+                "constraints": {
+                  "allowedSizes": [],
+                  "excludedSizes": []
+                },
+                "osPlatform": "Linux",
+                "imageReference": {
+                  "publisher": "Canonical",
+                  "offer": "UbuntuServer",
+                  "sku": "14.04.2-LTS",
+                  "version": "latest"
+                },
+                "count": "[steps('nodesStep').vmCountDataNodes]"
+              },
+              {
+                "name": "dataNodesAreMasterEligible",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Data nodes are master eligable",
+                "defaultValue": "no",
+                "toolTip": "TODO",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "Yes",
+                      "value": "yes"
+                    },
+                    {
+                      "label": "No",
+                      "value": "no"
+                    }
+                  ]
+                }
+              },
+             {
                 "name": "vmMasterNodes",
                 "type": "Microsoft.Compute.SizeSelector",
                 "label": "Master Node VM Size",
@@ -228,62 +225,46 @@
                   "version": "latest"
                 },
                 "count": "3"
+              },
+              {
+                "name": "vmCountClientNodes",
+                "type": "Microsoft.Common.DropDown",
+                "label": "Number of client nodes",
+                "defaultValue": "0",
+                "toolTip": "TODO",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "0",
+                      "value": "0"
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "vmClientNodes",
+                "type": "Microsoft.Compute.SizeSelector",
+                "label": "Client Node VM Size",
+                "toolTip": "",
+                "recommendedSizes": [
+                  "Standard_D1",
+                  "Standard_D2",
+                  "Standard_D3"
+                ],
+                "constraints": {
+                  "allowedSizes": [],
+                  "excludedSizes": []
+                },
+                "osPlatform": "Linux",
+                "imageReference": {
+                  "publisher": "Canonical",
+                  "offer": "UbuntuServer",
+                  "sku": "14.04.2-LTS",
+                  "version": "latest"
+                },
+                "count": "[steps('nodesStep').vmCountClientNodes]"
               }
             ]
-          },
-          {
-             "name": "clientNodesSelector",
-             "type": "Microsoft.Common.Selector",
-             "label": "Client Nodes",
-             "sublabel": {
-               "prevalidation": "Configure client nodes",
-               "postvalidation": "Client nodes configured"
-             },
-             "toolTip": "TODO",
-             "bladeTitle": "Client Nodes",
-             "bladeSubtitle": "Configure the client nodes",
-            "elements": [
-		  {
-		    "name": "vmCountClientNodes",
-		    "type": "Microsoft.Common.DropDown",
-		    "label": "Number of client nodes",
-		    "defaultValue": "0",
-		    "toolTip": "TODO",
-		    "constraints": {
-		      "allowedValues": [
-			{
-			  "label": "0",
-			  "value": "0"
-			}
-		      ]
-		    }
-		  },
-		{
-		  "name": "vmClientNodes",
-		  "type": "Microsoft.Compute.SizeSelector",
-		  "label": "Client Node VM Size",
-		  "toolTip": "",
-		  "recommendedSizes": [
-		     "Standard_D1",
-		     "Standard_D2",
-		     "Standard_D3"
-		  ],
-		  "constraints": {
-		     "allowedSizes": [],
-		     "excludedSizes": []
-		   },
-		   "osPlatform": "Linux",
-		   "imageReference": {
-		      "publisher": "Canonical",
-		      "offer": "UbuntuServer",
-		      "sku": "14.04.2-LTS",
-		      "version": "latest"
-		   },
-		  "count": "[steps('nodesStep').clientNodesSelector.vmCountDataNodes]" 
-		}
-            ]
-          }
-        ]
       }
     ],
     "outputs": {}
