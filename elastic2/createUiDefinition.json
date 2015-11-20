@@ -354,20 +354,6 @@
       }
     ],
     "outputs": {
-      "esVersion": "[steps('elasticsearchStep').version]",
-      "esClusterName": "[steps('elasticsearchStep').clusterName]",
-      "loadBalancerType": "[steps('externalAccesStep').externalLoadBalancer]",
-      "kibana": "[steps('elasticsearchStep').provisionKibana]",
-      "jumpbox": "[steps('externalAccesStep').provisionJumpbox]",
-      "vmSizeDataNodes": "[steps('nodesStep').vmDataNodes]",
-      "vmDataNodeCount": "[steps('nodesStep').vmCountDataNodes]",
-      "dataNodesAreMasterEligble": "[steps('nodesStep').dataNodesAreMasterEligible]",
-      "vmSizeMasterNodes": "[steps('nodesStep').vmMasterNodes]",
-      "vmClientNodeCount": "[steps('nodesStep').vmClientNodes]",
-      "vmSizeClientNodes": "[steps('nodesStep').vmCountClientNodes]",
-      "shieldAdminPassword": "[steps('shieldStep').es_admin.shieldAdminPassword",
-      "shieldReadPassword": "[steps('shieldStep').es_admin.shieldReadPassword",
-      "shieldKibanaPassword": "[steps('shieldStep').es_admin.shieldKibanaPassword"
     }
   }
 }
