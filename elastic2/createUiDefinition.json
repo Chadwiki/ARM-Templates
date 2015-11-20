@@ -76,25 +76,6 @@
               "required": true,
               "validationMessage": "TODO"
             }
-          },
-          {
-            "name": "provisionKibana",
-            "type": "Microsoft.Common.OptionsGroup",
-            "label": "Provision a Kibana Instance",
-            "defaultValue": "yes",
-            "toolTip": "Yes, to create a ??single?? Kibana Instance. ",
-            "constraints": {
-              "allowedValues": [
-                {
-                  "label": "Yes",
-                  "value": "yes"
-                },
-                {
-                  "label": "No",
-                  "value": "no"
-                }
-              ]
-            }
           }
         ]
       },
@@ -105,7 +86,7 @@
           "preValidation": "Required",
           "postValidation": "Done"
         },
-        "bladeTitle": "Elastic Users Role",
+        "bladeTitle": "Elastic User's & Roles",
         "elements": [
           {
             "name": "es_admin",
@@ -119,7 +100,7 @@
                   "password": "Password",
                   "confirmPassword": "Confirm password"
                 },
-                "toolTip": "Read Write All Indices, Read Only Role",
+                "toolTip": "Read Write All Indices, Admin Role",
                 "constraints": {
                   "required": true
                 },
@@ -141,7 +122,7 @@
                   "password": "Password",
                   "confirmPassword": "Confirm password"
                 },
-                "toolTip": "Read Only All Indices, Admin Role",
+                "toolTip": "Read Only All Indices, Read Only Role",
                 "constraints": {
                   "required": true
                 },
@@ -182,7 +163,7 @@
           "preValidation": "Required",
           "postValidation": "Done"
         },
-        "bladeTitle": "No",
+        "bladeTitle": "External Access Control",
         "elements": [
           {
             "name": "provisionJumpbox",
@@ -208,7 +189,7 @@
             "type": "Microsoft.Common.OptionsGroup",
             "label": "Loadbalancer",
             "defaultValue": "internal",
-            "toolTip": "Public or Internal, Load Balancer Network Access, for ??Kibana??.",
+            "toolTip": "Public or Internal, Load Balancer Network Access, for Kibana or Data Nodes.",
             "constraints": {
               "allowedValues": [
                 {
@@ -218,6 +199,25 @@
                 {
                   "label": "External",
                   "value": "external"
+                }
+              ]
+            }
+          },
+          {
+            "name": "provisionKibana",
+            "type": "Microsoft.Common.OptionsGroup",
+            "label": "Provision a Kibana Instance",
+            "defaultValue": "yes",
+            "toolTip": "Yes, to create a ??single?? Kibana Instance. ",
+            "constraints": {
+              "allowedValues": [
+                {
+                  "label": "Yes",
+                  "value": "yes"
+                },
+                {
+                  "label": "No",
+                  "value": "no"
                 }
               ]
             }
@@ -350,7 +350,6 @@
         ]
       }
     ],
-    "outputs": {
-    }
+    "outputs": {}
   }
 }
