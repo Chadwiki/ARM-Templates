@@ -350,6 +350,9 @@
         ]
       }
     ],
-    "outputs": {}
+    "outputs": {
+      "esVersion": "[steps('elasticsearchStep').esVersion.value]",
+      "esClusterName": "[steps('elasticsearchStep').esClusterName.value]"
+    }
   }
 }
