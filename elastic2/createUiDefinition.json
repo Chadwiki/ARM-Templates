@@ -160,63 +160,65 @@
         },
         "bladeTitle": "No",
         "elements": [
-          {
-            "name": "externalLoadBalancer",
-            "type": "Microsoft.Common.OptionsGroup",
-            "label": "Loadbalancer",
-            "defaultValue": "internal",
-            "toolTip": "TODO",
-            "constraints": {
-              "allowedValues": [
-                {
-                  "label": "Internal",
-                  "value": "internal"
-                },
-                {
-                  "label": "External",
-                  "value": "external"
+              {
+                "name": "externalLoadBalancer",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Loadbalancer",
+                "defaultValue": "internal",
+                "toolTip": "TODO",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "Internal",
+                      "value": "internal"
+                    },
+                    {
+                      "label": "External",
+                      "value": "external"
+                    }
+                  ]
                 }
-              ]
-            }
-          },
-          {
-            "name": "provisionKibana",
-            "type": "Microsoft.Common.OptionsGroup",
-            "label": "Kibana",
-            "defaultValue": "yes",
-            "toolTip": "TODO",
-            "constraints": {
-              "allowedValues": [
-                {
-                  "label": "Yes",
-                  "value": "yes"
-                },
-                {
-                  "label": "No",
-                  "value": "no"
+              },
+
+              {
+                "name": "provisionKibana",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Kibana",
+                "defaultValue": "yes",
+                "toolTip": "TODO",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "Yes",
+                      "value": "yes"
+                    },
+                    {
+                      "label": "No",
+                      "value": "no"
+                    }
+                  ]
                 }
-              ]
-            }
-          },
-          {
-            "name": "provisionJumpbox",
-            "type": "Microsoft.Common.OptionsGroup",
-            "label": "Jumpbox",
-            "defaultValue": "no",
-            "toolTip": "TODO",
-            "constraints": {
-              "allowedValues": [
-                {
-                  "label": "Yes",
-                  "value": "yes"
-                },
-                {
-                  "label": "No",
-                  "value": "no"
+              },
+
+              {
+                "name": "provisionJumpbox",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Jumpbox",
+                "defaultValue": "no",
+                "toolTip": "TODO",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "Yes",
+                      "value": "yes"
+                    },
+                    {
+                      "label": "No",
+                      "value": "no"
+                    }
+                  ]
                 }
-              ]
-            }
-          }
+              }
         ]
       },
       {
@@ -228,123 +230,149 @@
         },
         "bladeTitle": "No",
         "elements": [
-          {
-            "name": "vmMasterNodes",
-            "type": "Microsoft.Compute.SizeSelector",
-            "label": "Master Node VM Size",
-            "toolTip": "",
-            "recommendedSizes": [
-              "Standard_D1",
-              "Standard_D2",
-              "Standard_D3"
-            ],
-            "constraints": {
-              "allowedSizes": [],
-              "excludedSizes": []
-            },
-            "osPlatform": "Linux",
-            "imageReference": {
-              "publisher": "Canonical",
-              "offer": "UbuntuServer",
-              "sku": "14.04.2-LTS",
-              "version": "latest"
-            },
-            "count": "3"
-          },
-          {
-            "name": "vmCountDataNodes",
-            "type": "Microsoft.Common.TextBox",
-            "label": "Number of data nodes",
-            "defaultValue": "3",
-            "toolTip": "TODO",
-            "constraints": {
-              "required": true,
-              "regex": "^[1-9]\\d*$",
-              "validationMessage": "Atleast 1 or higher"
-            }
-          },
-          {
-            "name": "vmDataNodes",
-            "type": "Microsoft.Compute.SizeSelector",
-            "label": "Data Node VM Size",
-            "toolTip": "",
-            "recommendedSizes": [
-              "Standard_D1",
-              "Standard_D2",
-              "Standard_D3"
-            ],
-            "constraints": {
-              "allowedSizes": [],
-              "excludedSizes": []
-            },
-            "osPlatform": "Linux",
-            "imageReference": {
-              "publisher": "Canonical",
-              "offer": "UbuntuServer",
-              "sku": "14.04.2-LTS",
-              "version": "latest"
-            },
-            "count": "[steps('nodesStep').vmCountDataNodes]"
-          },
-          {
-            "name": "dataNodesAreMasterEligible",
-            "type": "Microsoft.Common.OptionsGroup",
-            "label": "Data nodes are master eligable",
-            "defaultValue": "no",
-            "toolTip": "TODO",
-            "constraints": {
-              "allowedValues": [
-                {
-                  "label": "Yes",
-                  "value": "yes"
+             {
+                "name": "vmMasterNodes",
+                "type": "Microsoft.Compute.SizeSelector",
+                "label": "Master Node VM Size",
+                "toolTip": "",
+                "recommendedSizes": [
+                  "Standard_D1",
+                  "Standard_D2",
+                  "Standard_D3"
+                ],
+                "constraints": {
+                  "allowedSizes": [],
+                  "excludedSizes": []
                 },
-                {
-                  "label": "No",
-                  "value": "no"
+                "osPlatform": "Linux",
+                "imageReference": {
+                  "publisher": "Canonical",
+                  "offer": "UbuntuServer",
+                  "sku": "14.04.2-LTS",
+                  "version": "latest"
+                },
+                "count": "3"
+              },
+
+
+              {
+                "name": "vmCountDataNodes",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Number of data nodes",
+                "defaultValue": "3",
+                "toolTip": "TODO",
+                "constraints": {
+                  "required": true,
+                  "regex": "^[1-9]\\d*$",
+                  "validationMessage": "Atleast 1 or higher"
                 }
-              ]
-            }
-          },
-          {
-            "name": "vmCountClientNodes",
-            "type": "Microsoft.Common.TextBox",
-            "label": "Number of client nodes",
-            "defaultValue": "3",
-            "toolTip": "TODO",
-            "constraints": {
-              "required": true,
-              "regex": "^[1-9]\\d*$",
-              "validationMessage": "Atleast 1 or higher"
-            }
-          },
-          {
-            "name": "vmClientNodes",
-            "type": "Microsoft.Compute.SizeSelector",
-            "label": "Client Node VM Size",
-            "toolTip": "",
-            "recommendedSizes": [
-              "Standard_D1",
-              "Standard_D2",
-              "Standard_D3"
-            ],
-            "constraints": {
-              "allowedSizes": [],
-              "excludedSizes": []
-            },
-            "osPlatform": "Linux",
-            "imageReference": {
-              "publisher": "Canonical",
-              "offer": "UbuntuServer",
-              "sku": "14.04.2-LTS",
-              "version": "latest"
-            },
-            "count": "[steps('nodesStep').vmCountClientNodes]"
-          }
+              },
+              {
+                "name": "vmDataNodes",
+                "type": "Microsoft.Compute.SizeSelector",
+                "label": "Data Node VM Size",
+                "toolTip": "",
+                "recommendedSizes": [
+                  "Standard_D1",
+                  "Standard_D2",
+                  "Standard_D3"
+                ],
+                "constraints": {
+                  "allowedSizes": [],
+                  "excludedSizes": []
+                },
+                "osPlatform": "Linux",
+                "imageReference": {
+                  "publisher": "Canonical",
+                  "offer": "UbuntuServer",
+                  "sku": "14.04.2-LTS",
+                  "version": "latest"
+                },
+                "count": "[steps('nodesStep').vmCountDataNodes]"
+              },
+              {
+                "name": "dataNodesAreMasterEligible",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Data nodes are master eligable",
+                "defaultValue": "no",
+                "toolTip": "TODO",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "Yes",
+                      "value": "yes"
+                    },
+                    {
+                      "label": "No",
+                      "value": "no"
+                    }
+                  ]
+                }
+              },
+
+              {
+                "name": "vmCountClientNodes",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Number of client nodes",
+                "defaultValue": "3",
+                "toolTip": "TODO",
+                "constraints": {
+                  "required": true,
+                  "regex": "^[1-9]\\d*$",
+                  "validationMessage": "Atleast 1 or higher"
+                }
+              },
+              {
+                "name": "vmClientNodes",
+                "type": "Microsoft.Compute.SizeSelector",
+                "label": "Client Node VM Size",
+                "toolTip": "",
+                "recommendedSizes": [
+                  "Standard_D1",
+                  "Standard_D2",
+                  "Standard_D3"
+                ],
+                "constraints": {
+                  "allowedSizes": [],
+                  "excludedSizes": []
+                },
+                "osPlatform": "Linux",
+                "imageReference": {
+                  "publisher": "Canonical",
+                  "offer": "UbuntuServer",
+                  "sku": "14.04.2-LTS",
+                  "version": "latest"
+                },
+                "count": "[steps('nodesStep').vmCountClientNodes]"
+              }
+
         ]
       }
     ],
     "outputs": {
-      "count": "[steps('nodesStep').vmCountClientNodes]"
+      "esVersion": "[steps('elasticsearchStep').version]",
+      "esClusterName": "[steps('elasticsearchStep').clusterName]",
+
+      "loadBalancerType": "[steps('externalAccesStep').externalLoadBalancer]",
+      "esPlugins": "Yes",
+      "kibana": "[steps('externalAccesStep').provisionKibana]",
+      "jumpbox": "[steps('externalAccesStep').provisionJumpbox]",
+
+      "vmSizeDataNodes": "[steps('nodesStep').vmDataNodes]",
+      "vmDataNodeCount": "[steps('nodesStep').vmCountDataNodes]",
+      "dataNodesAreMasterEligble": "[steps('nodesStep').dataNodesAreMasterEligible]",
+      "vmSizeMasterNodes": "[steps('nodesStep').vmMasterNodes]",
+      "vmClientNodeCount": "[steps('nodesStep').vmClientNodes]",
+      "vmSizeClientNodes": "[steps('nodesStep').vmCountClientNodes]",
+
+      "adminPassword": "[basics('credentials')",
+      "adminUsername": "[basics('userName')",
+      "shieldAdminPassword": "[steps('shieldStep').es_admin.shieldAdminPassword",
+      "shieldReadPassword": "[steps('shieldStep').es_admin.shieldReadPassword",
+      "shieldKibanaPassword": "[steps('shieldStep').es_admin.shieldKibanaPassword",
+
+      "location": "[location()]",
+      "virtualNetworkName" : "esvnet"
     }
   }
 }
