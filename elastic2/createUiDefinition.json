@@ -224,23 +224,6 @@
                 }
               ]
             }
-          },
-          {
-            "name": "dnsAndPublicIP",
-            "type": "Microsoft.Network.PublicIpAddressCombo",
-            "label": {
-              "publicIpAddress": "Public IP address",
-              "domainNameLabel": "DNS Prefix"
-            },
-            "toolTip": {
-              "domainNameLabel": "DNS Prefix for the VM public IP addresses."
-            },
-            "defaultValue": {
-              "publicIpAddressName": "publicIP"
-            },
-            "options": {
-              "hideNone": true
-            }
           }
         ]
       },
@@ -374,7 +357,6 @@
       "esVersion": "[steps('elasticsearchStep').version]",
       "esClusterName": "[steps('elasticsearchStep').clusterName]",
       "loadBalancerType": "[steps('externalAccesStep').externalLoadBalancer]",
-      "esPlugins": "Yes",
       "kibana": "[steps('elasticsearchStep').provisionKibana]",
       "jumpbox": "[steps('externalAccesStep').provisionJumpbox]",
       "vmSizeDataNodes": "[steps('nodesStep').vmDataNodes]",
@@ -383,17 +365,9 @@
       "vmSizeMasterNodes": "[steps('nodesStep').vmMasterNodes]",
       "vmClientNodeCount": "[steps('nodesStep').vmClientNodes]",
       "vmSizeClientNodes": "[steps('nodesStep').vmCountClientNodes]",
-      "adminPassword": "[basics('credentials')",
-      "adminUsername": "[basics('userName')",
       "shieldAdminPassword": "[steps('shieldStep').es_admin.shieldAdminPassword",
       "shieldReadPassword": "[steps('shieldStep').es_admin.shieldReadPassword",
-      "shieldKibanaPassword": "[steps('shieldStep').es_admin.shieldKibanaPassword",
-      "location": "[location()]",
-      "virtualNetworkName": "esvnet",
-      "publicIPAddressName": "[steps('externalAccesStep').DnsAndPublicIP.name]",
-      "dnsNameForPublicIP": "[steps('externalAccesStep').dnsAndPublicIP.domainNameLabel]",
-      "existingIPRGName": "[steps('externalAccesStep').dnsAndPublicIP.resourceGroup]",
-      "publicIPNewOrExisting": "[steps('externalAccesStep').dnsAndPublicIP.newOrExistingOrNone]"
+      "shieldKibanaPassword": "[steps('shieldStep').es_admin.shieldKibanaPassword"
     }
   }
 }
