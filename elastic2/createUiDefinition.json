@@ -48,11 +48,11 @@
         "bladeTitle": "Deployment Settings",
         "elements": [
           {
-            "name": "version",
+            "name": "esVersion",
             "type": "Microsoft.Common.DropDown",
             "label": "Elasticsearch Version",
             "defaultValue": "v2.0.0",
-            "toolTip": "TODO",
+            "toolTip": "Choose your version of Elastic",
             "constraints": {
               "allowedValues": [
                 {
@@ -67,7 +67,7 @@
             }
           },
           {
-            "name": "clusterName",
+            "name": "esClusterName",
             "type": "Microsoft.Common.TextBox",
             "label": "Cluster Name",
             "defaultValue": "changeME_clusterName",
@@ -166,7 +166,7 @@
         "bladeTitle": "External Access Control",
         "elements": [
           {
-            "name": "provisionJumpbox",
+            "name": "jumpbox",
             "type": "Microsoft.Common.OptionsGroup",
             "label": "Create a Jumpbox: Internal Access",
             "defaultValue": "yes",
@@ -185,7 +185,7 @@
             }
           },
           {
-            "name": "externalLoadBalancer",
+            "name": "loadBalancerType",
             "type": "Microsoft.Common.OptionsGroup",
             "label": "Loadbalancer",
             "defaultValue": "external",
@@ -204,7 +204,7 @@
             }
           },
           {
-            "name": "provisionKibana",
+            "name": "kibana",
             "type": "Microsoft.Common.OptionsGroup",
             "label": "Provision a Kibana Instance",
             "defaultValue": "yes",
@@ -298,7 +298,7 @@
             "type": "Microsoft.Common.OptionsGroup",
             "label": "Data nodes are master eligable",
             "defaultValue": "no",
-            "toolTip": "Enable Master Role on Data Nodes, not recommended with deicated Master Nodes",
+            "toolTip": "Enable Master Role on Data Nodes, not recommended with dedicated Master Nodes",
             "constraints": {
               "allowedValues": [
                 {
@@ -316,12 +316,12 @@
             "name": "vmCountClientNodes",
             "type": "Microsoft.Common.TextBox",
             "label": "Number of Client nodes",
-            "defaultValue": "3",
+            "defaultValue": "0",
             "toolTip": "Create x number of Client Nodes",
             "constraints": {
               "required": true,
-              "regex": "^[1--9]\\d*$",
-              "validationMessage": "Atleast 1 or higher"
+              "regex": "^\\d+$",
+              "validationMessage": "Must be a valid number"
             }
           },
           {
@@ -351,8 +351,12 @@
       }
     ],
     "outputs": {
-      "esVersion": "[steps('elasticsearchStep').esVersion.value]",
-      "esClusterName": "[steps('elasticsearchStep').esClusterName.value]"
+      "esVersion": "[steps('elasticsearchStep').esVersion]",
+      "esClusterName": "[steps('elasticsearchStep').esClusterName]",
+
+      "loadBalancerType": "[steps('externalAccessStep').loadBalancerType]",
+      "kibana": "[steps('externalAccessStep').kibana]",
+      "jumpbox": "[steps('externalAccesStep').jumpbox]"
     }
   }
 }
